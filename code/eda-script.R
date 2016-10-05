@@ -22,13 +22,10 @@ setwd(envpath)
 # reading in advertising data
 advertising <- read.csv("data/Advertising.csv", stringsAsFactors = FALSE)
 
-#computes summary statistics and histograms of TV and Sales. 
-#The summary statistics should be clearly labeled, and will be saved in a file eda-output.txt. 
-#The charts are saved in both PNG and PDF formats.
-
-
 #--------------------------------------------------------------------------------------------------
 # summary statistics of TV and Sales: eda-output.txt
+
+setwd(paste0(envpath, "data/"))
 
 sink(file = "eda-output.txt")
 cat("TV summary statistics\n")
@@ -41,8 +38,19 @@ sink()
 #--------------------------------------------------------------------------------------------------
 # histogram of TV: histogram-tv.png, histogram-tv.pdf
 
+setwd(paste0(envpath, "images/"))
+
+x = advertising$TV
+
 png(filename = "histogram-tv.png")
-hist(advertising$TV,
+hist(x,
+     main = "Histogram of TV",
+     xlab = "Units")
+dev.off()
+
+
+pdf("histogram-tv.pdf")
+hist(x,
      main = "Histogram of TV",
      xlab = "Units")
 dev.off()
@@ -50,7 +58,18 @@ dev.off()
 #--------------------------------------------------------------------------------------------------
 # histogram of sales: histogram-sales.png, histogram-sales.pdf
 
-hist(advertising$Sales,
+x = advertising$Sales
+
+png(filename = "histogram-sales.png")
+hist(x,
      main = "Histogram of Sales",
      xlab = "Units")
+dev.off()
 
+
+
+pdf("histogram-sales.pdf")
+hist(x,
+     main = "Histogram of Sales",
+     xlab = "Units")
+dev.off()
