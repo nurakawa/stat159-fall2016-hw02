@@ -18,89 +18,131 @@ Our goal is to provide advice on how to improve sales of the particular product.
 The Advertising dataset consists of _Sales_ (in thousands of units) of a particular product in 200 different markets, along with advertising budgets (in thousands of dollars) for the product in each of those markets for three different media: _TV_, _Radio_, and _Newspaper_.
 
 
-Below is the first ten rows of the Advertising Dataset:  
-```{r dataset, echo=F}
+Below is the first five rows of the Advertising Dataset:  
+```{r dataset, echo=F, fig.align='center'}
 envpath <- "C:/Users/Nura/Desktop/Fall 2016/Stat 159/stat159-fall2016-hw02/stat159-fall2016-hw02/"
 setwd(envpath)
 Advertising <- read.csv(paste0(envpath, "data/Advertising.csv"))
 Advertising <- Advertising[,-1]
-head(Advertising, 10)
+head(Advertising, 5)
 ```
+  
+
+The _Sales_ and _TV_ variables reveal the following distribution:
 
 
-The _Sales_ variable reveals the following distribution:
-
-![Histogram of Sales](C:/Users/Nura/Desktop/Fall 2016/Stat 159/stat159-fall2016-hw02/stat159-fall2016-hw02/images/histogram-sales.png){width="400px"}
+![Histogram of Sales](C:/Users/Nura/Desktop/Fall 2016/Stat 159/stat159-fall2016-hw02/stat159-fall2016-hw02/images/histogram-sales.png){width="250px"} ![Histogram of TV Budget](C:/Users/Nura/Desktop/Fall 2016/Stat 159/stat159-fall2016-hw02/stat159-fall2016-hw02/images/histogram-tv.png){width="250px"}
 
 
-Looking specifically at the _TV_ advertising budget, we see this distribution over the 200 markets:
+  
+#Methodology  
 
-![Histogram of TV Budget](C:/Users/Nura/Desktop/Fall 2016/Stat 159/stat159-fall2016-hw02/stat159-fall2016-hw02/images/histogram-tv.png){width="400px"}
-
-#Methodology
 We use Simple Linear Regression to model the association between __Sales__ and __TV__. Our method predicts __Sales__ using __TV__, using the following linear model:
 
 $$ Y = \beta_0 + \beta_1X $$
 
 Here, our __Y__ is __Sales__ and our __X__ is __TV__.
 
-The parameters $\beta_0$ and $\beta_1$ are respectively the intercept and slope of our linear model (also called a regression line) fitted to our data.
+The parameters $\beta_0$ and $\beta_1$ are respectively the intercept and slope of our linear model (also called a regression line) fitted to our data. These are estimated as follows:
 
-###More about the Linear Model
+$$ \hat{\beta_0} = \bar{y} - \hat{\beta_1}\bar{x} $$
+$$ \hat{\beta_1} = \frac{\sum(x_i-\bar{x})(y_i - \bar{y})}{\sum(x_i-\bar{x})^2} $$
 
-There exist several regression coefficients that allow us to asses at the accuracy of our linear model. Specifically, these coefficients give us an idea of how well our particular model allows us to predict __Sales__ from __TV__.
+where $\bar{x}$ is the mean of __TV__ and $\bar{y}$ is the mean of __Sales__. 
+  
+The _Least Squares Model_ minimizes the Residual Sum of Squares, which is defined as:
+
+$$RSS = (y_1 - \hat{\beta_0} - \hat{\beta_1}x_1)^2 + (y_2 - \hat{\beta_0} - \hat{\beta_1}x_2)^2 + ... + (y_n - \hat{\beta_0} - \hat{\beta_1}x_n)^2$$
+
+Figure 1 displays the simple linear regression fit to the data, where $\beta_0$ = 7.03 and $\beta_1$ = 0.0475.
+
+![Scatterplot of TV regressed onto Sales](C:/Users/Nura/Desktop/Fall 2016/Stat 159/stat159-fall2016-hw02/stat159-fall2016-hw02/images/scatterplot-tv-sales.png){width="350px"}
+
+##Hypothesis Testing
+
+To assess the existance and strength of an association, we use Hypothesis testing. Our _null hypothesis_, $H_0$, is that there does not exist an association between __TV__ and __Sales__. Our _alternative hypothesis_, $H_1$, is the opposite - that TV advtertising does impact sales. More specifically, we have: 
+
+$$H_0: \beta_1 = 0$$
+$$H_1: \beta_1 \neq 0$$
+
+We first assume the null hypothesis. To test the null hypothesis, we need to determine whether $\hat{\beta_1}$ is sufficiently far from zero that we can be confident that our true $\beta_1$ is non-zero. We thus compute a _t-statistic_ defined as, 
+
+$$t = \frac{\hat{\beta_1} - 0}{SE(\hat{\beta_1})}$$,
+
+which measures the number of standard deviations that $\hat{\beta_1}$ is away from zero. Keeping our assumption of the null hypothesis, we then compute the probability of observing any value equal to $\mid t \mid$ or larger. This is our _p-value_. Typically we look for a p-value of 0.05 or less, meaning that we are 95% confident that our alternative hypothesis is correct. For our purpose we will reject the null hypothesis if our p-value is less than or equal to 0.05.
+
+##More about the Linear Model
+
+There exist several regression coefficients that allow us to asses at the accuracy of our linear model. Specifically, these coefficients give us an idea of how well our particular model allows us to predict __Sales__ from __TV__. These are the Residual Standard Error (RSE) and the $R^2$.
 
 
-####Residual Standard Error (RSE)
+###Residual Standard Error (RSE)
 The RSE is an estimate of the standard deviation of the error in our model. This shows how far our data will deviate from the generated regression line. The equation for RSE from page 69 of _Introduction to Statistical Learning_ is:
 
-#double subscript error replace
+$$RSE = \sqrt{\frac{1}{n-2}\sum{(y_i - \hat{y_i})^2}}$$
 
-where $(y_i)$ is a data point of our response variable __Sales__ _as predicted by our model_, and $(yhat_i)$ is our actual data point. Our goal always is to generate a model with a minimal RSE.
+where $y_i$ is a data point of our response variable __Sales__ _as predicted by our model_, and $\hat{y_i}$ is our actual data point. Our goal always is to generate a model with a minimal RSE.
 
-####R-Squared
+###R-Squared
+The $R^2$ measures the goodness of fit of our model. It measures the proportion of variance explained by our model. Thus it has the range [0,1] and is independent of Y's scale.
 
-The R-Squared measures the goodness of fit of our model. It measures the proportion of variance explained by our model. Thus it has the range [0,1] and is independent of Y's scale.
-
-$$ R^2 = (TSS - RSS) / TSS $$
+$$ R^2 = \frac{(TSS - RSS)}{TSS} $$
 
 Where $TSS$ measures the total sum of squares; the total variance inherent in the response before performing our regression. $RSS$ meausres the amount of variability explained by our regression. Thus the above formula measures the proportion of variability in Y that is explained using X.
 
-R Squared near 1: A large proportion of variability in the response explained by the regression; i.e. our model fits the data well.
-R Squared near 0: The regression did not explain much variability in the response; i.e. our regressin performed poorly.
-Although R Squared has the advantage of being more interpretable than RSE (due to it's restriction between 0 and 1), it is still problem dependent.
+If $R^2$ is a value close to 1, a large proportion of variability in the response explained by the regression; i.e. our model fits the data well.
+
+If $R^2$ is a value near 0, the regression did not explain much variability in the response; i.e. our regressin performed poorly.
 
 
-
-
----
 #Results
 
-We compute the regression coefficients:
+The following tables show the results of our linear regression. We used R to create the model:
+
+```{r, eval=F}
+# reading in advertising data
+advertising <- read.csv("data/Advertising.csv", stringsAsFactors = FALSE)
+
+# computing regression object via lm()
+regression_object <- lm(Sales ~ TV, data = advertising)
+
+# summary of regression object
+regression_summary <- summary(regression_object)
+```
+
+and obtained these resulting coefficients: 
 
 ```{r produce table, eval = T, warning = F, message=F, results="asis", echo=F}
 load(paste0(envpath, "/data/regression.RData"))
-
-
-R_square <- regression_summary$r.squared
-F_stat <- regression_summary$fstatistic[1]; names(F_stat) = NULL
-RSE <- 1234
+R_square <- round(regression_summary$r.squared, 2)
+F_stat <- round(regression_summary$fstatistic[1], 2); names(F_stat) = NULL
+RSE <-round(sqrt(deviance(regression_object)/df.residual(regression_object)), 2)
 ```
 
-
-More information about the least-squares model is given below:
 
 ```{r regression output xtable, results="asis", message=F, warning=F, echo=F}
 library(xtable)
 reg_table <- xtable(regression_object)
-print(reg_table, type="latex", comment = F)
+print(reg_table, type="latex", comment = F, label = "Table 1")
 ```
 
-![](C:/Users/Nura/Desktop/Fall 2016/Stat 159/stat159-fall2016-hw02/stat159-fall2016-hw02/images/scatterplot-tv-sales.png){width = "400px"}
+
+```{r output table 2, results="asis", message=F, warning=F, echo=F}
+output_table <- c("Residual Standard Error", RSE, "R^2", R_square, "F-Statistic", F_stat)
+output_table <-matrix(output_table, nrow = 3, byrow = T)
+colnames(output_table) <- c("Quantity", "Value")
+op_table <- xtable(output_table)
+print(op_table, type = "latex", comment = F, include.rownames=F, 
+      label = "Table 2", include.colnames = T)
+```
+
+The tables show a very small p-value (it is not actually zero, but very close to it); hence, if we see a small p-value, we can infer that there is an association between the predictor and the response. We rejet the null hypothesis - that is, we declare a relationship to exist between TV and Sales, and thus a correlation.
 
 
+However, looking at our model assessment, we see that a linear model is not a very close fit, given our $R^2$ is `r R_square`, and not very close to 1. Thus, we can declare an association but must take into account the possibility of an ill-fitting model. It is better to try different types of models, including non-linear ones, to predit Sales. 
 
 #Conclusions
+The extremely small p-value indicates that there is indeed a correlation between TV and Sales, but our $R^2$ value indicates that we should try fitting alternative models. Alternative methods include using more predictors and running multiple regression, or fitting a non-linear model.
 
 
 
