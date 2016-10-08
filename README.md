@@ -10,26 +10,26 @@ The project reproduces a Simple Linear Regression shown in section 3.1 "Simple L
 The file structure is as follows:  
 
 stat159-fall2016-hw02/  
-    .gitignore  
-    README.md  
-    Makefile  
-    data/  
-      README.md  
-      Advertising.csv  
-      eda-output.txt  
-      regression.RData  
-    code/  
-      README.md  
-      eda-script.R  
-      regression-script.R  
-    images/  
-        histogram-sales.png  
-        histogram-sales.pdf  
-        histogram-tv.png  
-        histogram-tv.pdf  
-        scatterplot-tv-sales.png  
-        scatterplot-tv-sales.pdf  
-    report/  
-        report.Rmd  
-        report.pdf  
++ .gitignore   
++ README.md  
++ Makefile  
++ data/  
+  + README.md  
+  + Advertising.csv  
+  + eda-output.txt  
+  + regression.RData  
++  code/  
+  + README.md  
+  + eda-script.R  
+  + regression-script.R  
++ images/  
+  +      histogram-sales.png  
+  +      histogram-sales.pdf  
+  +      histogram-tv.png  
+  +      histogram-tv.pdf  
+  +      scatterplot-tv-sales.png  
+  +      scatterplot-tv-sales.pdf  
++    report/  
+  +      report.Rmd  
+  +      report.pdf  
 
